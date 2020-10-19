@@ -1,0 +1,94 @@
+<script>
+    var RecaptchaOptions = {
+        theme: 'clean'
+    };
+</script>
+
+<div class="wrapper row">
+
+    <div class="ten offset-by-one columns">
+        <ul class="tabs row clearfix" data-tabgroup="first-tab-group">
+            <li class="one-half column"><a href="#sign-in" class="active"><?= lang('Sign.signInHeader') ?></a></li>
+            <li class="one-half column"><a href="#sign-up"><?= lang('Sign.signOnHeader') ?></a></li>
+        </ul>
+    </div>
+
+    <div class="ten offset-by-one columns">
+
+        <section id="first-tab-group" class="tabgroup">      
+            <div id="sign-in">
+                <form role="form" method="post" action="/login">
+                    <div>
+                        <label for="signInLogin"><?= lang('Sign.signInLogin') ?></label>
+                        <input type="text" class="u-full-width" id="signInLogin" 
+                               name="login"
+                               placeholder="<?= lang('Sign.signInLoginPlaceholder') ?>" 
+                               autofocus required>
+                    </div>
+                    <div>
+                        <label for="signInPassword"><?= lang('Sign.signInPassword') ?></label>
+                        <input type="password" class="u-full-width" 
+                               id="signInPassword" name="password" required>
+                    </div>
+                    <?php if (session()->get('signInErrors')) { ?>
+                        <div class="alert alert-warning">
+                            <?php echo session()->get('signInErrors'); ?>
+                        </div>
+                    <?php } ?>
+                    <br>
+                    <button type="submit" name="sign-in" value="1"
+                            class="button-primary"><?= lang('Sign.signInAction') ?></button>
+                </form> 
+            </div>
+
+            <div id="sign-up">
+                <form role="form" method="post" action="/register">
+                    <div>
+                        <label for="signUpUsername"><?= lang('Sign.signUpUsernamePlacehodler') ?></label>
+                        <input type="text" class="u-full-width" 
+                               id="signUpUsername" 
+                               name="username"
+                               placeholder="<?= lang('Sign.signUpUsername') ?>" 
+                               required>
+                    </div>
+                    <div>
+                        <label for="signUpEmail"><?= lang('Sign.signUpEmail') ?></label>
+                        <input type="email" class="u-full-width" 
+                               id="signUpEmail" name="email"
+                               placeholder="<?= lang('Sign.signUpEmailPlaceholder') ?>" 
+                               required>
+                    </div>
+                    <div>
+                        <label for="signUpPassword"><?= lang('Sign.signUpPassword') ?></label>
+                        <input type="password" class="u-full-width" 
+                               id="signUpPassword" name="password" required>
+                    </div>
+                    <div>
+                        <label for="signUpPasswordRepeat"><?= lang('Sign.signUpPasswordRepeat') ?></label>
+                        <input type="password" class="u-full-width" 
+                               id="signUpPasswordRepeat" name="password_confirm" required>
+                    </div>
+                        <div class="g-recaptcha form-group" data-theme="dark" 
+                             data-sitekey="6LdWSQcTAAAAAHEMmwsPAaUOfi3HtzdtC4H90a2d"></div>
+                    <br>
+                    <?php if (session()->get('signUpErrors')) { ?>
+                        <div class="alert alert-warning">
+                            <?= session()->get('signUpErrors') ?>
+                        </div>
+                    <?php } ?>
+                    <br>
+                    <button type="reset" class="button"><?= lang('Sign.signUpClear') ?></button>
+                    <button type="submit" class="button-primary"
+                            name="sign-up" value="1"><?= lang('Sign.signUpAction') ?></button>
+                </form> 
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="row">
+    <div class="twelve columns img-main-site-containter">
+        <div class="img-main-site-img"></div>
+        <p class="img-main-site-text"><?= lang('Navigation.seoSiteInformation') ?></p>
+    </div>
+</div>

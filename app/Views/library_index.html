@@ -1,0 +1,39 @@
+<script>
+    $(function() {
+    {if is_logged}
+        load_forum_list("{subsite_url}library/roll/plus.html", "sub", "fa-plus", "#table_forum_list_add");
+        load_forum_list("{subsite_url}library/roll/minus.html", "unsub", "fa-minus", "#table_forum_list_del");
+    {else}
+        load_forum_list_unlog("{subsite_url}library/roll/all.html", "#table_forum_list");
+    {endif}
+
+    });
+</script>
+
+<div class="row">
+    <div class="ten offset-by-one columns">
+        <h4>{lang_lib_LibraryHowWorkTitle}</h4>
+        <p class="text-justify">{lang_lib_LibraryHowWorkDesc}</p>
+        <br>
+    </div>
+    <div class="twelve columns row">
+        {if is_logged}
+            <div class="six columns">
+                <h5 class="text-center">{lang_lib_SubList}</h5>
+                <table id="table_forum_list_del" class="table table-clear ten offset-by-two columns">
+
+                </table>
+            </div>
+            <div class="six columns">
+                <h5 class="text-center">{lang_lib_UnsubList}</h5>
+                <table id="table_forum_list_add" class="table table-clear ten columns">
+
+                </table>
+            </div>
+        {else}
+            <div id="table_forum_list" class="ten offset-by-one columns">
+            </div>
+        {endif}
+        <br>
+    </div>
+</div>

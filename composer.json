@@ -1,0 +1,14 @@
+{
+    "name": "noritoshi/kostka-server",
+    "description": "PHP Web Application for dice roll.",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Noritoshi-Scarlett",
+            "email": "kamil.balu@gmail.com"
+        }
+    ],
+    "require": {
+        "codeigniter4/framework": "^4.0"
+    }
+}

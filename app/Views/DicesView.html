@@ -1,0 +1,58 @@
+
+	<div class="ten offset-by-one columns row dice-view-list">
+
+	{if isset(roll_data) }
+	
+		<strong>{lang_dice_DiceRollUserName}</strong> <a href="{subsite_url}user/profile/{roll_data['roll'][user_id]}.html">{roll_data["roll"][user_name]}</a>
+		<br>
+		<br>
+		
+		{foreach roll_data["dices"] as dice}
+	
+		<div class="twelve-columns row dice-view-item text-center">
+
+			<div>
+				<div class="dice-values">{dice[dice_values]}</div>
+			</div>
+			<div>
+				<div class="dice-place{if ! in_array(dice[dice_type], dicesType)} dice-custom{endif}" {if in_array(dice[dice_type], dicesType)}data-number="{dice[dice_type]}"{endif} data-count="{dice[dice_count]}"></div>
+				<div class="dice-type">(1-{dice[dice_type]})</div>
+			</div>
+			<div>
+				<div class="dice-title">{dice[dice_name]}</div>
+				<div class="dice-desc">{dice[dice_desc]}<br><div style="text-align: right"><small>{dice[dice_date]}</small></div></div>
+			</div>
+
+		</div>
+		{/foreach}
+		
+		<div class="twelve columns">
+		
+			<br>
+			
+			<label for="inputDiceRollUrl">{lang_dice_DiceRollLink}</label>
+			<textarea id="inputDiceRollUrl" class="u-full-width" name="dice-url">{roll_data["roll"][roll_code]}</textarea>
+			
+			<br>
+		
+		{if ! isset(dice_is_doubled)}
+			<label>{lang_dice_DiceRollPostUrl}</label>
+			<div class="u-full-width text-center">
+				<a target="_blank" href="{roll_data['roll'][roll_url]}">{roll_data['roll'][roll_url]}
+				&nbsp;&nbsp;
+				<i class="fa fa-1x fa-external-link"></i>
+				</a>
+			</div>
+			
+			<br><br>
+		{endif}
+			
+		</div>
+		
+	{else}
+	<div>
+		{lang_dice_DiceRollNotFound}
+	</div>
+	{endif}
+
+	</div>

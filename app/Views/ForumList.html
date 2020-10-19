@@ -1,0 +1,30 @@
+
+	<div class="ten offset-by-one columns">
+		<a class="button u-pull-right" href="{subsite_url}forum/diceroll/{forum_name}.html">{lang_forum_GoToDiceRoll}</a>
+	</div>
+	
+	<div class="ten offset-by-one columns">
+		<strong>{lang_forum_LastDicesOnForum}</strong>
+		<br>
+		<br>
+	</div>
+	
+	<div class="twelve columns row">
+	
+	{if isset(dices_data) && (dices_data != null)}
+		{foreach dices_data as dice_data}
+			<div class="four columns no-margin text-center dice-small-view">
+				<a class="dice-title" href="{subsite_url}dices/view/{dice_data[roll_id]}/{dice_data[roll_token]}.html">
+					<em>#{dice_data[dice_id]}</em> {dice_data[dice_name]}
+				</a>
+					<div class="dice-place{if ! in_array(dice_data[dice_type], dicesType)} dice-custom{endif}" {if in_array(dice_data[dice_type], dicesType)}data-number="{dice_data[dice_type]}"{endif} data-count="{dice_data[dice_count]}"></div>
+					<div class="dice-type">{dice_data[dice_values]}</div>
+			</div>
+		{/foreach}
+	{else}
+		<br>
+		<div class="text-center"><em>{lang_forum_NotFoundDices}</em></div>
+	{endif}
+	
+		<br>
+	</div>

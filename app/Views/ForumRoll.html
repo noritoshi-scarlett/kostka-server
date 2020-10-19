@@ -1,0 +1,243 @@
+	
+	<script>
+	
+	$(document).ready(function() {
+	
+		function changeValueInSimple() {
+			var textVal = '';
+			$('.simple-view .dice-values').text('');
+			if ( $('.dice-place.active').attr('data-number') == '2') {
+				if ( jQuery.isNumeric( parseInt($("#formInputDicesCont").val()) ) ) {
+					for (var i = 1; (i < parseInt($("#formInputDicesCont").val()) && i < 10); i++) {
+						textVal += 'orzeł, ';
+					}
+					textVal += 'reszta';
+				}
+			} else {
+				if ( jQuery.isNumeric( parseInt($("#formInputDicesCont").val()) ) ) {
+					for (var i = 1; (i < parseInt($("#formInputDicesCont").val()) && i < 10); i++) {
+						textVal += '1, ';
+					}
+					textVal += '2';
+				}
+			}
+			if ( ! jQuery.isNumeric( $("#formInputDicesCont").val() ) ) {
+				textVal = '1';
+			}
+			$('.simple-view .dice-values').text(textVal);
+		}
+		
+		$( "#inputDiceRollName" ).on('input', function() { 
+			$('.simple-view .dice-title').text($(this).val());
+		});
+		$( "#inputDiceRollDesc" ).on('input', function() { 
+			$('.simple-view .dice-desc').text($(this).val());
+		});
+		$( "#formInputDicesCont" ).on('input', function() { 
+			changeValueInSimple();
+		});
+		$( "#formInputDicesCustom" ).on('input', function() { 
+			$('.simple-view .dice-type').text('(1- ' + $(this).val() + ')');
+		});
+	
+		$('.dice-place').click(function() {
+			$('.dice-place').removeClass('active');
+			$(this).addClass('active');
+			$('#formInputDicesType').val($(this).attr('data-number'));
+			$('#formDicesRoll button').removeAttr("disabled");
+			$('#inputDiceType').text('{lang_forum_DiceRollLabelType}k' + $(this).attr('data-number'));
+			$('.simple-view .dice-type').text('(1- ' + $(this).attr('data-number') + ')');
+			$('.simple-view .dice-place').attr('data-number', $(this).attr('data-number'));
+			if ($(this).attr('data-number') == 10 || $(this).attr('data-number') == 100) {
+				$('#formInputDices100 + label').removeClass('hidden');
+				$('#formInputDices100 + label + .label-desc').removeClass('hidden');
+			} else {
+				$('#formInputDices100 + label').addClass('hidden');
+				$('#formInputDices100 + label + .label-desc').addClass('hidden');
+			}
+			if ($(this).attr('data-number') == 1) {
+				$('#formInputDicesCustom').removeClass('hidden');
+				$('#formInputDicesCustom').val('');
+				$('#inputDiceType').hide("fast");
+			} else {
+				$('#formInputDicesCustom').addClass('hidden');
+				$('#formInputDicesCustom').val(6);
+				$('#inputDiceType').show("fast");
+			}
+			if ($(this).attr('data-number') == 2) {
+				$('#inputDiceType').text('{lang_forum_DiceRollLabelTypeCoin}');
+			}
+			changeValueInSimple();
+		});
+		
+		$('#formInputDices100').change(function() {
+			if ( $(this).is(":checked") ) {
+				$('.dice-place[data-number="10"]').attr('data-number', "100");
+				$('#formInputDicesType').val("100");
+				$('#inputDiceType').text('{lang_forum_DiceRollLabelType}k100');
+				$('.simple-view .dice-type').text('(1-100)');
+				$('.simple-view .dice-place').attr('data-number', '100');
+			} else {
+				$('.dice-place[data-number="100"]').attr('data-number', "10");
+				$('#formInputDicesType').val("10");
+				$('#inputDiceType').text('{lang_forum_DiceRollLabelType}k10');
+				$('.simple-view .dice-type').text('(1-10)');
+				$('.simple-view .dice-place').attr('data-number', '10');
+			}
+		});
+	});
+	
+	</script>
+	
+	
+	<div class="ten offset-by-one columns">
+		<a class="button u-pull-right" href="{subsite_url}forum/dicelist/{forum_name}.html">{lang_forum_GoToDiceList}</a>
+	</div>
+	
+	{if isset(roll_data) }
+	<div class="ten offset-by-one columns">
+	
+		{if $roll_data['roll']['other_author']}
+		{lang_dice_DiceRollUserName} <a href="{subsite_url}user/profile/{$roll_data['roll']['user_id']}.html">Profil</a><br>
+		{endif}
+		
+		<div class="dice-view-list">
+		
+			{foreach roll_data["dices"] as dice}
+			<br>
+		
+			<div class="twelve-columns row dice-view-item text-center">
+
+				<div>
+					<div class="dice-values">{dice[dice_values]}</div>
+				</div>
+				<div>
+					<div class="dice-place{if ! in_array(dice[dice_type], dicesType)} dice-custom{endif}" {if in_array(dice[dice_type], dicesType)}data-number="{dice[dice_type]}"{endif} data-count="{dice[dice_count]}"></div>
+					<div class="dice-type">(1-{dice[dice_type]})</div>
+				</div>
+				<div>
+					<div class="dice-title">{dice[dice_name]}</div>
+					<div class="dice-desc">{dice[dice_desc]}br><div style="text-align: right"><small>{dice[dice_date]}</small></div></div>
+				</div>
+
+			</div>
+			{/foreach}
+			
+			<div class="twelve columns">
+			
+				<br>
+				
+				{if ! $roll_data['roll']['other_author']}
+				<label for="inputDiceRollUrl">{lang_dice_DiceRollLink}</label>
+				<textarea id="inputDiceRollUrl" class="u-full-width" name="dice-url">{roll_data["roll"][roll_code]}</textarea>
+				<br>
+				{endif}
+			
+			{if ! isset(dice_is_doubled)}
+				<label>{lang_dice_DiceRollPostUrl}</label>
+				<div class="u-full-width text-center">
+					<a href="{roll_data["roll"][roll_url]}">{roll_data["roll"][roll_url]}</a>
+				</div>
+				
+				<br><br>
+			{endif}
+				
+			</div>
+		</div>
+	</div>
+	{endif}
+	
+	<form id="formDicesRoll" role="form" method="post" action="">
+			
+		<div class="input-group row">
+			<div class="offset-by-one column ten columns">
+				<p class="text-justify">{lang_forum_diceRollDesc}</p>
+				<label for="inputDiceRollUrl">{lang_forum_DiceRollLabelUrl}</label>
+				<input id="inputDiceRollUrl" class="u-full-width" type="text" name="dice_url" {if isset(dice_bad_data)}value="{dice_bad_data["dice_url"]}"{endif}  autocomplete="on" placeholder="{lang_forum_GivePostUrl}" required="">
+				<label for="inputDiceRollName">{lang_forum_DiceRollLabelName}</label>
+				<input id="inputDiceRollName" class="u-full-width" type="text" name="dice_name" {if isset(dice_bad_data)}{if isset(dice_bad_data["dice_name"])}value="{dice_bad_data["dice_name"]}"{endif}{endif} autocomplete="on" placeholder="{lang_forum_GivePostName}" required="">
+				<label for="inputDiceRollDesc">{lang_forum_DiceRollLabelDesc}</label>
+				<textarea id="inputDiceRollDesc" class="u-full-width" type="text" name="dice_desc" autocomplete="on" placeholder="{lang_forum_GivePostDesc}">{if isset(dice_bad_data)}{if isset(dice_bad_data["dice_desc"])}{dice_bad_data["dice_desc"]}{endif}{endif}</textarea>
+			</div>
+		</div>
+		
+		<div class="dice-cont">
+			
+			<div class="dice-place" data-number="2">
+				<div class="dice-number"></div>
+			</div>
+			<div class="dice-place" data-number="4">
+				<div class="dice-number"></div>
+			</div>
+			<div class="dice-place" data-number="6">
+				<div class="dice-number"></div>
+			</div>
+			<div class="dice-place" data-number="8">
+				<div class="dice-number"></div>
+			</div>
+			<div class="dice-place" data-number="10">
+				<div class="dice-number"></div>
+			</div>
+			<div class="dice-place" data-number="12">
+				<div class="dice-number"></div>
+			</div>
+			<div class="dice-place" data-number="20">
+				<div class="dice-number"></div>
+			</div>
+			<div class="dice-place" data-number="1">
+				<div class="dice-number"></div>
+			</div>
+			
+			<div class="dice-form">
+				
+				<label class="text-center" id="inputDiceType">{lang_forum_DiceRollLabelType}</label>
+				
+				<input class="input-line u-full-width hidden" id="formInputDicesCustom" name="dice_custom" value="6" placeholder="{lang_dices_GiveDicesCustom}" type="number" />
+							
+				<input class="input-line u-full-width" id="formInputDicesCont" name="dice_count" placeholder="{lang_dices_GiveDicesCount}" required="" type="number" />
+					
+				<input id="formInputDicesType" name="dice_type" value="0" type="hidden" />
+			
+				<button type="submit" name="submit_dices_roll" value="1" disabled="disabled" class="button-link u-full-width">{lang_dices_RandomizeIt}</button>
+				
+				<div class="text-center">
+					<input id="formInputDices100" class="nice-check" name="dice_roll_100" type="checkbox" />
+					<label for="formInputDices100" class="hidden"></label>
+					<div class="label-desc hidden">{lang_dices_Use100Points}</div>
+				</div>
+				
+				<div class="text-center">
+					<input id="formInputDicesJoinNew" class="nice-check" name="dice_join_new" value="1" type="checkbox" />
+					<label for="formInputDicesJoinNew"></label>
+					<div class="label-desc">Dopisz do wykonanego wczesniej rzutu</div>
+				</div>
+				
+			</div>
+		
+		</div>
+	
+	</form>
+	
+		
+	<div class="ten offset-by-one columns dice-view-list simple-view">
+	
+	{lang_forum_SimpleRoll}
+	<br>
+	<br>
+	
+		<div class="twelve-columns row dice-view-item text-center">
+			<div>
+				<div class="dice-values"></div>
+			</div>
+			<div>
+				<div class="dice-place" data-number=""></div>
+				<div class="dice-type"></div>
+			</div>
+			<div>
+				<div class="dice-title">{if isset(dice_bad_data)}{if isset(dice_bad_data["dice_name"])}{dice_bad_data["dice_name"]}{endif}{endif}</div>
+				<div class="dice-desc">{if isset(dice_bad_data)}{if isset(dice_bad_data["dice_desc"])}{dice_bad_data["dice_desc"]}{endif}{endif}</div>
+			</div>
+		</div>
+	</div>
+		
+</div>

@@ -1,0 +1,15 @@
+{if isset(alert[alerts][0])}
+    {foreach alert[alerts] as alt}
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-5 col-md-offset-1 col-sm-5 col-sm-offset-1 col-xs-12 alert {if alt[success]}alert-success{else}alert-danger{endif}">{alt[desc]}</div>
+        </div>
+    {/foreach}
+{endif}
+
+{if isset(flashdata)}
+    {foreach flashdata as alt}
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-5 col-md-offset-1 col-sm-5 col-sm-offset-1 col-xs-12 alert alert-success">{alt}</div>
+        </div>
+    {/foreach}
+{endif}

@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="six columns">
+        <div class="well">
+            <p><strong><?= lang('Dashboard.CurrentLogged') ?></strong></p>
+            <p>
+                <?php foreach($activity['current'] as $user) : ?>
+                    <span><a href="/user/profile/<?= $user->id ?>.html"><?= $user->username ?></a></span>
+                <?php endforeach ?>
+            <p>
+        </div>
+    </div>
+    <div class="six columns">
+        <div class="well">
+            <p><strong><?= lang('Dashboard.LastActivity') ?></strong></p>
+            <p>
+                <?php foreach($activity['last'] as $user) : ?>
+                    <span><a href="/user/profile/<?= $user->id ?>.html"><?= $user->username ?></a></span>
+                <?php endforeach ?>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="twelve columns img-main-site-containter">
+        <div class="img-main-site-img"></div>
+        <p class="img-main-site-text"><?= lang('Navigation.seoSiteInformation') ?></p>
+    </div>
+</div>

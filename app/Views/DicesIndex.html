@@ -1,0 +1,43 @@
+
+	<div class="dice-cont">
+	
+		<div class="dice-form">
+		
+			<form id="formDicesRoll" role="form" method="post" action="">
+								
+				<input class="input-line u-full-width" id="formInputDicesCont" name="dices_roll_count" placeholder="{lang_dices_GiveDicesCount}" required="" type="text" />
+					
+				<input id="formInputDicesType" name="dices_roll_type" value="0" type="hidden" />
+			
+				<button type="submit" name="submit_dices_roll" value="1" disabled="disabled" class="button-link u-full-width">{lang_dices_RandomizeIt}</button>
+			
+				<div class="text-center">
+					<input id="formInputDices100" class="nice-check" name="dices_roll_100" type="checkbox" />
+					<label for="formInputDices100" class="hidden"></label>
+					<div class="label-desc hidden">{lang_dices_Use100Points}</div>
+				</div>
+				
+			</form>
+		
+		</div>
+		
+		<div class="dice-place" data-number="4">
+			<div class="dice-number"></div>
+		</div>
+		<div class="dice-place" data-number="6">
+			<div class="dice-number"></div>
+		</div>
+		<div class="dice-place" data-number="8">
+			<div class="dice-number"></div>
+		</div>
+		<div class="dice-place" data-number="10">
+			<div class="dice-number"></div>
+		</div>
+		<div class="dice-place" data-number="12">
+			<div class="dice-number"></div>
+		</div>
+		<div class="dice-place" data-number="20">
+			<div class="dice-number"></div>
+		</div>
+	
+	</div>

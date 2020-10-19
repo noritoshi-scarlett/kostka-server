@@ -1,0 +1,13 @@
+<ul class="breadcrumb clearfix">
+    <li><a href="">Home</a></li>
+    <li><a class="active"></a></li>
+    <li><a href=""></a></li>
+</ul>
+
+<div class="twelve columns alert-cont">
+    <?php if (session()->get('success')) { ?>
+        <div class="row alert alert-success">
+            <?= session()->get('success') ?>
+        </div>
+    <?php } ?>
+</div>

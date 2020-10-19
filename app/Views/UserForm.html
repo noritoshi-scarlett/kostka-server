@@ -1,0 +1,168 @@
+<script>
+
+    $(function () {
+        
+        //zmienne elementow
+        var avImput = $("#formInputAvatar");
+        var avImg = $('#avatarImg');
+        var avMsgs = $('#avatarMsgs');
+        var avBtnBrowse = $('#avatarBtnBrowse');
+        var avBtnUpload = $('#avatarBtnUpload');
+        
+        //preview obrazka
+        function upload_img(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    avImg.attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+                avImg.slideDown("500");
+            }
+        }
+                
+        //zastepczy buton do przegladania
+        avBtnBrowse.click(function () {
+            $(this).parent().find('input').click();
+        });
+        
+        //zmiana inputa -> wstawienie pliku w podglad
+        avImput.change(function () {
+            upload_img(this);
+            avBtnUpload.slideDown("500");
+        });
+        
+        //wyslanie uploadu
+        avBtnUpload.click(function () {
+            var formData = new FormData($('form')[0]);
+            
+            $.ajax({
+                url: '{subsite_url}user/upload.html',
+                type: 'POST',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function(response) {
+                    if (response.type == "error")
+                    {
+                        avMsgs.removeClass('alert-success');
+                        avMsgs.addClass('alert-danger');
+                    }
+                    else
+                    {
+                        avMsgs.removeClass('alert-danger');
+                        avMsgs.addClass('alert-success');
+                        $.ajax({
+                            url: "{subsite_url}avatar/getImage/{user_logged_name}.html",
+                            type: "get",
+                            success: function(response) {
+                                if (response != '')
+                                {
+                                    $(".profile-area img").remove();
+                                    $('.profile-area').prepend(response);
+                                }
+                            }
+                        });
+                    }
+                    avMsgs.slideDown("500");
+                    avMsgs.empty();
+                    avMsgs.append(response.desc);
+                }
+            });
+        });
+    });
+    
+</script>
+
+<div class="wrapper row">
+
+	<div class="ten offset-by-one columns">
+
+        <h4>{lang_user_ChangeProfileTitle}</h4>
+        <br>
+        <p class="text-justify">{lang_user_ChangeProfileDesc}<p>
+		
+		<ul class="tabs row clearfix" data-tabgroup="first-tab-group">
+			<li class="one-half column"><a href="#user-edit" class="active">{lang_user_ProfileData}</a></li>
+			<li class="one-half column"><a href="#sign-edit">{lang_user_SignData}</a></li>
+		</ul>
+    
+	</div>
+	<div class="ten offset-by-one columns">
+    
+        <section id="first-tab-group" class="tabgroup">
+			
+			<div id="user-edit">
+
+                <form role="form" method="post" action="">
+                    
+                    <div id="avatarMsgs" class="alert"></div>
+                    
+                    <div id="avatarFrame">
+                        <label for="formInputAvatar">{lang_user_Avatar}</label>
+                        <input id="formInputAvatar" name="user_avatar" type="file" class="file-loading u-full-width button button-primary" accept="image/*" />
+                        <br>
+                        <a id="avatarBtnBrowse" class="button u-full-width">
+							<i class="fa fa-2x fa-upload"></i>
+							<div>
+								{lang_user_AvatarBrowse}<br><br>
+								<div id="avatarInfo">
+									{lang_user_AvatarSize}<br>
+									{lang_user_AvatarWeight}
+								</div>
+							</div>
+						</a>
+                        <br>
+                        <div id="avatarImgCont">
+                            <img id="avatarImg" src="#" alt="{lang_user_Avatar}" />
+                        </div>
+                        <a id="avatarBtnUpload" class="button button-primary u-full-width">Wyslij</a>
+                    </div>
+                </form>
+				
+                <form role="form" method="post" action="{subsite_url}user/editProfile.html">
+                    <div>
+                        <label for="formInputDesc">{lang_user_Desc}</label>
+                        <textarea class="u-full-width" rows="8" id="formInputDesc" name="user_desc" placeholder="{lang_user_GiveDesc}">{userProfile->user_desc}</textarea>
+                    </div>
+                
+                    <button type="submit" name="submit_edit_profile" value="1" class="button-primary">{lang_user_Save}</button>
+                        
+                </form> 
+            </div>
+			
+			<div id="sign-edit">
+                <form role="form" method="post" action="{subsite_url}user/editSign.html">
+                        
+                    <div class="form-group">
+                        <label for="formInputName">{lang_sign_Username}</label>
+                        <input type="text" class="u-full-width" id="formInputName" name="user_name" value="{userProfile->user_name}" autocomplete="nickname" placeholder="{lang_sign_GiveUsername}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="formInputEmail">{lang_sign_Email}</label>
+                        <input type="email" class="u-full-width" id="formInputEmail" name="user_email" value="{userProfile->user_email}" autocomplete="emal" placeholder="{lang_sign_GiveEmail}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="formInputPassword1">{lang_sign_Password}</label>
+                        <input type="password" class="u-full-width" id="formInputPassword1" name="user_password1" autocomplete="new-password" placeholder="{lang_sign_GivePassword}">
+                    </div>
+                    <div class="form-group">
+                        <label for="formInputPassword2">{lang_sign_PasswordRetry}</label>
+                        <input type="password" class="u-full-width" id="formInputPassword2" name="user_password2" autocomplete="new-password" placeholder="{lang_sign_GivePasswordRetry}">
+                    </div>
+                    
+                    <button type="reset" class="button">{lang_sign_Clear}</button>
+                    <button type="submit" name="submit_edit_sign" value="1"  class="button-primary">{lang_user_Save}</button>
+                        
+                </form> 
+            </div>
+    
+        </div>
+        
+        <br>
+        
+    </div>
+	
+</div>
