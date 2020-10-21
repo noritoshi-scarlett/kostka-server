@@ -236,6 +236,9 @@ button.button-link[disabled], a.button.button-link[disabled] {
     border: 1px solid #000c;
 	cursor: not-allowed;
 }
+button.button-image {
+    background-color: transparent;
+}
 
 /* Forms
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
