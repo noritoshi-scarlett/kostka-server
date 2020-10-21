@@ -36,6 +36,12 @@ $routes->post('/login', 'Home::signIn');
 $routes->get('/logout', 'Home::signOut');
 
 /**
+ * AJAX Requests.
+ */
+$routes->put('/subscription/(:num)', 'Library::subscribeForum/$1');
+$routes->delete('/subscription/(:num)', 'Library::unSubscribeForum/$1');
+
+/**
  * --------------------------------------------------------------------
  * Additional Routing
  * --------------------------------------------------------------------

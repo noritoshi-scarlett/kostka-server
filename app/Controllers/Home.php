@@ -17,9 +17,9 @@ class Home extends BaseController
      */
     public function index()
     {
-        if ($this->isLogged) {
+        if ($this->logged) {
             $userModel = new UserModel();
-            $data['activity'] = [
+            $data['activity'] = (object) [
                 'current' => $userModel->getActivity(60 * 10), // 10 min
                 'last'    => $userModel->getActivity(60 * 60 * 48) // 48h
             ];
@@ -49,10 +49,7 @@ class Home extends BaseController
      */
     public function signUp()
     {
-        if (!$this->isLogged) {
-            return redirect()->to('/');
-        }
-        if ('post' !== $this->request->getMethod()) {
+        if ($this->logged || 'post' !== $this->request->getMethod()) {
             return redirect()->to('/');
         }
 
@@ -100,8 +97,7 @@ class Home extends BaseController
      */
     public function signIn()
     {
-        if (!empty($this->session->get('user-id')) 
-                || 'post' !== $this->request->getMethod()) {
+        if ($this->logged || 'post' !== $this->request->getMethod()) {
             return redirect()->to('/');
         }
 
@@ -145,8 +141,8 @@ class Home extends BaseController
     {
         $this->session->set([
                 'username'         => $userData->username,
-                'user-id'          => $userData->id,
-                'permission-level' => $userData->permission,
+                'user_id'          => $userData->id,
+                'permission_level' => $userData->permission,
                 'activity'         => $userData->last_activity
             ]);
             $this->session->setFlashdata('success',

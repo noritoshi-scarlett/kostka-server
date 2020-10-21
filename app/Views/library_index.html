@@ -1,39 +1,51 @@
-<script>
-    $(function() {
-    {if is_logged}
-        load_forum_list("{subsite_url}library/roll/plus.html", "sub", "fa-plus", "#table_forum_list_add");
-        load_forum_list("{subsite_url}library/roll/minus.html", "unsub", "fa-minus", "#table_forum_list_del");
-    {else}
-        load_forum_list_unlog("{subsite_url}library/roll/all.html", "#table_forum_list");
-    {endif}
-
-    });
-</script>
-
 <div class="row">
     <div class="ten offset-by-one columns">
-        <h4>{lang_lib_LibraryHowWorkTitle}</h4>
-        <p class="text-justify">{lang_lib_LibraryHowWorkDesc}</p>
+        <h4><?= lang('Library.Title') ?></h4>
+        <p class="text-justify">
+            <?= sprintf(
+                    lang('Library.Description'),
+                    lang('Library.Links.Forum'),
+                    lang('Library.Links.Admin')
+                ) ?>
+        </p>
         <br>
     </div>
     <div class="twelve columns row">
-        {if is_logged}
+        <?php if ($user->logged): ?>
             <div class="six columns">
-                <h5 class="text-center">{lang_lib_SubList}</h5>
-                <table id="table_forum_list_del" class="table table-clear ten offset-by-two columns">
-
-                </table>
+                <h5 class="text-center"><?= lang('Library.SubscribedList') ?></h5>
+                <div id="forumsListSubscribed" class="ten offset-by-one columns">
+                    <?php foreach($forumsList->subscribed as $forum): ?>
+                        <div class="item well well-hover row">
+                            <?= $addItem($forum, false) ?>
+                        </div>
+                    <?php endforeach;?>
+                    <?= sprintf(lang('Library.EmptyList'), empty($forumsList->subscribed) ? 'block' : 'none' )?>
+                </div>
             </div>
             <div class="six columns">
-                <h5 class="text-center">{lang_lib_UnsubList}</h5>
-                <table id="table_forum_list_add" class="table table-clear ten columns">
-
-                </table>
+                <h5 class="text-center"><?= lang('Library.UnSubscribedList') ?></h5>
+                <div id="forumsListUnSubscribed" class="ten offset-by-one columns">
+                    <?php foreach($forumsList->unSubscribed as $forum): ?>
+                        <div class="item well well-hover row">
+                            <?= $addItem($forum, true) ?>
+                        </div>
+                    <?php endforeach;?>
+                    <?= sprintf(lang('Library.EmptyList'), empty($forumsList->unSubscribed) ? 'block' : 'none' )?>
+                </div>
             </div>
-        {else}
-            <div id="table_forum_list" class="ten offset-by-one columns">
+        <?php else: ?>
+            <div class="twelve columns row">
+                <div id="forumsListAll" class="ten offset-by-one columns">
+                    <?php foreach($forumsList->all as $forum): ?>
+                        <div class="item well well-hover row">
+                            <?= $addItem($forum, null) ?>
+                        </div>
+                    <?php endforeach;?>
+                    <?= sprintf(lang('Library.EmptyList'), empty($forumsList->all) ? 'block' : 'none' )?>
+                </div>
             </div>
-        {endif}
+        <?php endif; ?>
         <br>
     </div>
 </div>

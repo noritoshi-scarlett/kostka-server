@@ -36,13 +36,13 @@ class UserModel extends Model
      *
      * @param int $interval Interval from now to last activity.
      *
-     * @return array
+     * @return object
      */
-    public function getActivity(int $interval): array
+    public function getActivity(int $interval): ?object
     {
-        return $this->builder()
+        return (object) $this->builder()
                 ->getWhere('last_activity >=' . (time() - $interval))
-                ->getResult('object');
+                ->getResult();
     }
 
     /**

@@ -2,14 +2,9 @@
 <html lang="pl">
     <head>
         <title><?= lang('Navigation.seoSiteTitle') ?></title>
-
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#000000">
-
-        <link rel="stylesheet" href="/assets/stylesheet/normalize.css" />
-        <link rel="stylesheet" href="/assets/stylesheet/skeleton.css" />
-        <link rel="stylesheet" href="/assets/stylesheet/font-awesome.css" />
-        <link rel="stylesheet" href="/assets/stylesheet/main.css" />
+        <link rel="stylesheet" href="/assets/stylesheet/site.min.css" />
     </head>
     <body>
         <div class="container">
@@ -18,7 +13,7 @@
                     <i class="fa fa-2x fa-home"></i>
                     <div class="bt-menu-desc"><?= lang('Navigation.navHome') ?></div>
                 </a>
-                <?php if ($user->isLogged) { ?>
+                <?php if ($user->logged): ?>
                     <div class="profile-area" id="logged_avatar">
                         <a href="/user/profile/{user.id}" class="bt-menu-desc">
                             <div><?= $user->username ?></div>
@@ -28,37 +23,39 @@
                         <i class="fa fa-2x fa-user"></i>
                         <div class="bt-menu-desc"><?= lang('Navigation.navProfile') ?></div>
                     </a>
-                <?php } ?>
-                <?php if ($user->isLogged) { ?>
+                <?php endif; ?>
+                <?php if ($user->logged): ?>
                     <a href="/logout" class="bt-icon">
                         <i class="fa fa-2x fa-sign-out"></i>
                         <div class="bt-menu-desc">
                             <?= lang('Navigation.navSignOut') ?>
                         </div>
                     </a>
-                <?php } else { ?>
+                <?php else:?>
                     <a href="/" class="bt-icon">
                         <i class="fa fa-2x fa-sign-in"></i>
                         <div class="bt-menu-desc">
                             <?= lang('Navigation.navSignIn') ?>
                         </div>
                     </a>
-                <?php } ?>
-                <?php if ($user->permissionLevel > 0) { ?>
-                        <a href="/forum/diceroll/{forum->forum_name}" class="bt-icon">
+                <?php endif;?>
+                <?php if ($user->logged): ?>
+                    <?php foreach($subscribeList as $forum): ?>
+                        <a href="/forum/diceroll/<?= $forum->code_name ?>" class="bt-icon">
                             <i class="fa fa-2x fa-connectdevelop"></i>
-                            <div class="bt-menu-desc">{forum->forum_title}</div>
+                            <div class="bt-menu-desc"><?= $forum->name ?></div>
                         </a>
-                    <a href="/library/add" class="bt-icon">
+                    <?php endforeach;?>
+                    <a href="/library" class="bt-icon">
                         <i class="fa fa-2x fa-plus"></i>
                         <div class="bt-menu-desc"><?= lang('Navigation.navAddForum') ?></div>
                     </a>
-                <?php } else { ?>
+                <?php else: ?>
                     <a href="/library" class="bt-icon">
-                        <i class="fa fa-2x fa-book">
-                        </i><div class="bt-menu-desc"><?= lang('Navigation.navForums') ?></div>
+                        <i class="fa fa-2x fa-book"></i>
+                        <div class="bt-menu-desc"><?= lang('Navigation.navForums') ?></div>
                     </a>
-                <?php } ?>
+                <?php endif;?>
             </div>
             <div class="side-body row">
                 <div class="logo-text"><i><?= lang('Navigation.seoSiteTitle') ?></i></div>

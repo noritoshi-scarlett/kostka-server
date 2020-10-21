@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\LibraryModel;
+
 /**
  * Class BaseController
  *
@@ -42,7 +44,21 @@ class BaseController extends Controller
      *
      * @var bool
      */
-    protected $isLogged;
+    protected $logged;
+
+    /**
+     * List of subscribed forums.
+     *
+     * @var array 
+     */
+    protected $subscribeList;
+
+    /**
+     * Library Model instance.
+     *
+     * @var LibraryModel
+     */
+    protected $libraryModel;
 
     /**
      * Constructor.
@@ -57,13 +73,19 @@ class BaseController extends Controller
         parent::initController($request, $response, $logger);
 
         $this->session = \Config\Services::session();
-        $this->isLogged = !empty($this->session->get('user-id'));
+        $this->logged = !empty($this->session->get('user_id'));
 
         // Last activity
-        $userId = $this->session->get('user-id');
+        $userID = $this->session->get('user_id');
         if (time() - $this->session->get('last_activity') >= self::ACTIVE_INTERVAL) {
             $userModel = new \App\Models\UserModel();
-            $userModel->update($userId, ['last_activity' => time()]);
+            $userModel->update($userID, ['last_activity' => time()]);
+        }
+
+        //Subscibed list
+        $this->libraryModel = new LibraryModel();
+        if ($this->logged) {
+            $this->subscribeList = $this->libraryModel->getSubscribedForumsByUser($userID);
         }
     }
 
@@ -78,11 +100,12 @@ class BaseController extends Controller
     protected function showPage(string $pageName, array $data): void
     {
         $data['user'] = (object) [
-                    'isLogged'        => $this->isLogged,
-                    'userId'          => $this->session->get('user-id'),
+                    'logged'        => $this->logged,
+                    'userId'          => $this->session->get('user_id'),
                     'username'        => $this->session->get('username'),
-                    'permissionLevel' => $this->session->get('permission-level')
+                    'permissionLevel' => $this->session->get('permission_level')
         ];
+        $data['subscribeList'] = $this->subscribeList;
         
         echo view('header.html', $data)
         . view('nav.html', $data)

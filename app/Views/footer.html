@@ -4,9 +4,9 @@
             <small><?php lang('main_CopyRight') ?></small>
         </div>
 
-        <script src="{site_url}application/assets/javascript/jquery.min.js"></script>
-        <script src="{site_url}application/assets/kostka/javascript/main.js"></script>
-        <?php if (!$user->isLogged) { ?>
+        <script src="/assets/javascript/jquery.min.js"></script>
+        <script src="/assets/javascript/site.min.js"></script>
+        <?php if (!$user->logged) { ?>
             <script src='https://www.google.com/recaptcha/api.js'></script>
         <?php } ?>
     </body>
