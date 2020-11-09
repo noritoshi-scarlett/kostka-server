@@ -38,6 +38,7 @@ $routes->get('/logout', 'Home::signOut');
 /**
  * AJAX Requests.
  */
+$routes->post('/dice/generate/(:any)/(:alphanum)', 'Dice::generateQrCode/$1/$2');
 $routes->put('/subscription/(:num)', 'Library::subscribeForum/$1');
 $routes->delete('/subscription/(:num)', 'Library::unSubscribeForum/$1');
 

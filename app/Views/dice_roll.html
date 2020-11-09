@@ -1,0 +1,112 @@
+<div class="ten offset-by-one columns">
+    <a class="button u-pull-right" href="/forum/view/<?= $forum->code_name ?>">
+       <?= lang('Dice.GoToForum') ?>
+    </a>
+</div>
+
+<div class="ten offset-by-one columns">
+    <?php if ($foreignAuthor): ?>
+        <?= lang('Dice.RollingAuthor') ?>
+        <a href="/user/profile/<?= $foreignAuthor.id ?>">
+            <?= $foreignAuthor.username ?>
+        </a>
+        <br>
+    <?php endif;?>
+    <div class="dice-view-list">
+        <?php foreach($dices as $dice): ?>
+        <div class="twelve-columns row dice-view-item text-center">
+            <div>
+                <div class="dice-values"><?= $dice->values ?></div>
+            </div>
+            <div>
+                <div class="dice-place <?= $dice->custom ? 'dice-custom' : '' ?>"
+                     data-number="<?= $dice->type ?>"
+                     data-count="<?= $dice->count ?>">
+                </div>
+                <div class="dice-type">(1-<span><?= $dice->type ?></span>)</div>
+            </div>
+            <div>
+                <div class="dice-title"><?= $dice->title ?></div>
+                <div class="dice-desc">
+                    <?= $dice->description ?>
+                    <div class="align-right">
+                        <small><?= $dice->date ?></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php endforeach;?>
+
+        <div class="twelve columns">
+            <label for="inputDiceRollUrl"><?= lang('Dice.QrCode') ?></label>
+            <img src="<?= $qrCode ?>" class="u-full-width" name="dice-url"/>
+            <?php if (!$diceDoubled): ?>
+                <label><?= lang('Dice.PostLink') ?></label>
+                <div class="u-full-width text-center">
+                    <a href="<?= $roll->url ?>"><?= $roll->url ?></a>
+                </div>
+            <?php endif;?>
+        </div>
+    </div>
+</div>
+
+<form id="formDicesRoll" role="form" method="post" action="">
+    <div class="input-group row">
+        <div class="offset-by-one column ten columns">
+            <p class="text-justify"><?= lang('Dice.Description') ?></p>
+
+            <label for="inputDiceRollName"><?= lang('Dice.Form.Name.Label') ?></label>
+            <input id="inputDiceRollName" class="u-full-width" type="text" name="dice_name" 
+                <?= isset($invalidData->name) ? "value=\"$invalidData->name\"" : '' ?>
+                autocomplete="on" placeholder="<?= lang('Dice.Form.Name.Placeholder') ?>" required="" />
+
+            <label for="inputDiceRollDesc"><?= lang('Dice.Form.Description.Label') ?></label>
+            <textarea id="inputDiceRollDesc" class="u-full-width" type="text" name="dice_desc" 
+                placeholder="<?= lang('Dice.Form.Description.Placeholder') ?>"
+                autocomplete="on"><?= $invalidData->description ?? '' ?></textarea>
+        </div>
+    </div>
+
+    <div class="dice-cont">
+
+        <?php foreach($config->types as $diceData): ?>
+            <div class="dice-place" data-number="<?= $diceData->cube_size ?>">
+                <div class="dice-number"></div>
+            </div>
+        <?php endforeach;?>
+
+        <div class="dice-form">
+            <label class="text-center" id="inputDiceType"
+                    data-empty="<?= lang('Dice.Form.ConfigureEmpty') ?>" 
+                    data-selected="<?= lang('Dice.Form.ConfigureSelected') ?>">
+                <?= lang('Dice.Form.ConfigureEmpty') ?>
+            </label>
+            <input class="input-line u-full-width hidden" id="formInputDicesCustom" 
+                   name="dice_custom" value="6" type="number"
+                   placeholder="<?= lang('Dice.Form.SetAsCustom') ?>" />
+            <input class="input-line u-full-width" id="formInputDicesCont" 
+                   name="dice_count" required="" type="number"
+                   placeholder="<?= lang('Dice.Form.CountOfDices.Placeholder') ?>" />
+            <input id="formInputDicesType" name="dice_type" value="0" type="hidden" />
+            <button type="submit" name="submit_dices_roll" value="1" disabled="disabled" 
+                    class="button-link u-full-width"><?= lang('Dice.Rolling') ?></button>
+        </div>
+    </div>
+</form>
+
+<div class="ten offset-by-one columns dice-view-list example-view">
+    <?= lang('Dice.Example.Title') ?>
+    <div class="twelve-columns row dice-view-item text-center">
+        <div>
+            <div class="dice-values"></div>
+        </div>
+        <div>
+            <div class="dice-place" data-number=""></div>
+            <div class="dice-type">(k-<span></span>)</div>
+        </div>
+        <div>
+            <div class="dice-title"><?= $invalidData->name ?? '' ?></div>
+            <div class="dice-desc"><?= $invalidData->description ?? '' ?></div>
+        </div>
+    </div>
+</div>

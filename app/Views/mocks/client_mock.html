@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pl">
+    <head>
+        <title><?= lang('Navigation.seoSiteTitle') ?></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#000000">
+        <link rel="stylesheet" href="/assets/stylesheet/site.min.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="side-body row">
+                <div id="dice-snackbar"></div>
+                <div id="rollingContainer" style="display: none" id="rollingQrContainer">
+                    <div class="iframe-container">
+                        <iframe></iframe>
+                    </div>
+                    <div class="qr-container">
+                        <img src="" title="kod QR rzutu kostka" alt="Zeskanuj kod QR aby rzucać za pomocą fajnej apki w telefonie." />
+                    </div>
+                </div>
+    
+                <div class="username logout">Wyloguj [Noritoshi]</div>
+                <button id="btnGenerateRollingLink" type="button">Generuj kod QR</button>
+                <input type="hidden" name="t" value="10" />
+                <input type="hidden" name="f" value="40" />
+            </div>
+        </div>
+        
+        <script src="/assets/javascript/jquery.min.js"></script>
+        <script src="/export-assets/javascript/kostka-link-generator.js"></script>
+    </body>
+</html>

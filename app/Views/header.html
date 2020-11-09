@@ -41,7 +41,7 @@
                 <?php endif;?>
                 <?php if ($user->logged): ?>
                     <?php foreach($subscribeList as $forum): ?>
-                        <a href="/forum/diceroll/<?= $forum->code_name ?>" class="bt-icon">
+                        <a href="/forum/view/<?= $forum->code_name ?>" class="bt-icon">
                             <i class="fa fa-2x fa-connectdevelop"></i>
                             <div class="bt-menu-desc"><?= $forum->name ?></div>
                         </a>

@@ -61,6 +61,13 @@ class BaseController extends Controller
     protected $libraryModel;
 
     /**
+     * Incoming data.
+     *
+     * @var \CodeIgniter\HTTP\RequestInterface
+     */
+    protected $request;
+
+    /**
      * Constructor.
      */
     public function initController(
@@ -74,6 +81,9 @@ class BaseController extends Controller
 
         $this->session = \Config\Services::session();
         $this->logged = !empty($this->session->get('user_id'));
+        
+        //request
+        $this->request = $request;
 
         // Last activity
         $userID = $this->session->get('user_id');
@@ -100,7 +110,7 @@ class BaseController extends Controller
     protected function showPage(string $pageName, array $data): void
     {
         $data['user'] = (object) [
-                    'logged'        => $this->logged,
+                    'logged'          => $this->logged,
                     'userId'          => $this->session->get('user_id'),
                     'username'        => $this->session->get('username'),
                     'permissionLevel' => $this->session->get('permission_level')

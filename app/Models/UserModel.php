@@ -14,7 +14,11 @@ class UserModel extends Model
     protected $allowedFields = [
         'username',
         'email',
+        'avatar',
+        'description',
         'password',
+        'settings_get_invitations',
+        'settings_get_messages',
         'permission',
         'last_activity'
     ];
@@ -41,6 +45,7 @@ class UserModel extends Model
     public function getActivity(int $interval): ?object
     {
         return (object) $this->builder()
+                ->select('id, username, avatar')
                 ->getWhere('last_activity >=' . (time() - $interval))
                 ->getResult();
     }

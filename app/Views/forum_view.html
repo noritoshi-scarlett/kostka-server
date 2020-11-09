@@ -1,0 +1,51 @@
+<div class="ten offset-by-one columns">
+    <div class="profile-area">
+        <i class="fa fa-forum-set"><?= $forum->icon ?></i>
+        <p><?= $forum->name ?></p>
+    </div>
+    <br>
+
+    <?php if ($forum->description): ?>
+    <div>
+        <p><?= lang('Forum.Description') ?></p>
+        <div class="well">
+            <span><em><?= strip_tags($forum->description) ?></em></span>
+            <br>
+        </div>
+        <br>
+    </div>
+    <br>
+    <?php endif;?>
+    <div>
+        <p><?= lang('Forum.UsersList') ?></p>
+        <div class="row">
+            <?php foreach($forumUsers as $user): ?>
+            <div class="four columns no-margin item well text-center">
+                <?= $user->avatar ? "<img class=\"img-circle\" src=\"/$user->avatar\" />" : '' ?>
+                <p><?= $user->username ?></p>
+            </div>
+            <?php endforeach;?>
+        </div>
+    </div>
+    <br>
+    <br>
+    <?php if (!empty($forumRolls)): ?>
+        <p><?= lang('Forum.DicesList') ?></p>
+        <div class="twelve columns row">
+            <?php foreach($forumRolls as $rollData): ?>
+            <div class="one-third well column no-margin text-center dice-small-view">
+                <a class="dice-title" href="/dices/view/<?= $rollData->id ?>/<?= $rollData->token ?>.html">
+                    <em>#<?= $rollData->id ?></em> <?= $rollData->title ?>
+                </a>
+                <div class="dice-place <?= $rollData->custom ? 'dice-custom' : '' ?>" 
+                        <?= $rollData->custom ? "data-number=\"{$rollData->type}\"" : '' ?>
+                        data-count="<?= $rollData->count ?>"></div>
+                <div class="dice-type"><?= $rollData->values ?></div>
+            </div>
+            <?php endforeach;?>
+        </div>
+    <?php else: ?>
+        <div class="text-center"><em><?= lang('Forum.DicesNotFound') ?></em></div>
+    <?php endif;?>
+    <br>
+</div>

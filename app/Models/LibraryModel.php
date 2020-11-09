@@ -13,7 +13,10 @@ class LibraryModel extends Model
     protected $useSoftDeletes = false;
     protected $allowedFields = [
         'code_name',
+        'icon',
+        'domain',
         'name',
+        'token',
         'visibility',
         'description',
         'script_type'
@@ -26,6 +29,9 @@ class LibraryModel extends Model
     protected $validationRules = [
         'code_name'   => 'required|min_length[3]|is_unique[forums.code_name]|alpha_numeric_space',
         'name'        => 'required|min_length[3]',
+        'icon'        => 'required|min_length[2]|max_length[8]',
+        'domain'      => 'required|min_length[5]',
+        'token'       => 'required|min_length[16]|max_length[16]|is_unique[forums.token]|alpha_numeric_space',
         'script_type' => 'required|min_length[3]'
     ];
     protected $validationMessages = [];
@@ -41,11 +47,11 @@ class LibraryModel extends Model
     public function getUnSubscribedForumsByUser(int $userID): ?array
     {
         return $this->builder()
-                ->select('forums.*')
+                ->select('forums.id, forums.icon, forums.code_name, forums.name, forums.domain')
                 ->join('users_forums', 'forums.id = users_forums.forum_id', 'left outer')
                 ->where('forums.visibility', 1)
                 ->where('users_forums.user_id', null)
-                //->whereNotIn('users_forums.user_id', [$userID])
+                ->orWhereNotIn('users_forums.user_id', [$userID])
                 ->get()
                 ->getResult();
     }
@@ -60,7 +66,7 @@ class LibraryModel extends Model
     public function getSubscribedForumsByUser(int $userID): ?array
     {
         return $this->builder()
-                ->select('forums.*')
+                ->select('forums.id, forums.icon, forums.code_name, forums.name, forums.domain')
                 ->join('users_forums', 'users_forums.forum_id = forums.id')
                 ->where('users_forums.user_id', $userID)
                 ->get()
@@ -91,6 +97,9 @@ class LibraryModel extends Model
     {
         if (isset($data['data']['code_name'])) {
             unset($data['data']['code_name']);
+        }
+        if (isset($data['data']['token'])) {
+            unset($data['data']['token']);
         }
         return $data;
     }
